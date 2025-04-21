@@ -1,39 +1,74 @@
 import 'package:flutter/material.dart';
+import '../model/model_data_hotel.dart';
 
 class DetailPage extends StatelessWidget {
-  const DetailPage({super.key});
+  final HotelInfo hotel;
+
+  const DetailPage({super.key, required this.hotel});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Wisma Ayank")),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Image.network(
-            'https://via.placeholder.com/400x200',
-            width: double.infinity,
-            height: 200,
-            fit: BoxFit.cover,
-          ),
-          const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Wisma Ayank", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                SizedBox(height: 8),
-                Text("Rp. 150.000", style: TextStyle(fontSize: 16, color: Colors.grey)),
-                SizedBox(height: 16),
-                Text(
-                  "Wisma Ayank adalah penginapan nyaman dan terjangkau di pusat kota. Cocok untuk wisatawan maupun pelancong bisnis. Fasilitas lengkap, akses mudah ke pusat kuliner dan belanja.",
-                  style: TextStyle(fontSize: 14),
-                )
-              ],
+      appBar: AppBar(title: Text(hotel.name)),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Image.asset(hotel.imagePath),
             ),
-          )
-        ],
+            SizedBox(height: 12),
+
+            // Nama hotel
+            Text(
+              hotel.name,
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+
+            // Rating di bawahnya, rata kanan
+            Align(
+              alignment: Alignment.centerRight,
+              child: StarRating(rating: hotel.rating),
+            ),
+
+            SizedBox(height: 4),
+            Text(hotel.price, style: TextStyle(fontSize: 18)),
+            SizedBox(height: 12),
+            Text(hotel.description, style: TextStyle(fontSize: 16)),
+          ],
+        ),
       ),
+    );
+  }
+}
+
+class StarRating extends StatelessWidget {
+  final double rating;
+  final double iconSize;
+
+  const StarRating({super.key, required this.rating, this.iconSize = 20});
+
+  @override
+  Widget build(BuildContext context) {
+    int fullStars = rating.floor();
+    bool hasHalfStar = (rating - fullStars) >= 0.5;
+    int emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(rating.toStringAsFixed(1),
+            style: TextStyle(fontSize: iconSize * 0.85)),
+        SizedBox(width: 4),
+        ...List.generate(fullStars,
+                (index) => Icon(Icons.star, color: Colors.amber, size: iconSize)),
+        if (hasHalfStar)
+          Icon(Icons.star_half, color: Colors.amber, size: iconSize),
+        ...List.generate(emptyStars,
+                (index) => Icon(Icons.star_border, color: Colors.amber, size: iconSize)),
+      ],
     );
   }
 }

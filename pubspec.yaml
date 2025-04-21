@@ -48,6 +48,7 @@ dev_dependencies:
   google_maps_flutter: ^2.12.1
 
 
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -56,6 +57,9 @@ flutter:
   assets:
     - assets/style_map/style_dark.json
     - assets/style_map/style_retro.json
+    - assets/image/hotel_ibis.jpg
+    - assets/image/favohotel.jpg
+    - assets/image/mercurehotel.jpg
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
